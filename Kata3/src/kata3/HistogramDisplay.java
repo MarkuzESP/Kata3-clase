@@ -10,15 +10,13 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 
 public class HistogramDisplay extends ApplicationFrame{
+    private final Histogram<String> histogram;
     
-    public HistogramDisplay() {
+    public HistogramDisplay(Histogram<String> histogram) {
         super("Histograma");
+        this.histogram=histogram;
         setContentPane(createPanel());
         pack();
-    }
-    
-    public void execute(){
-        setVisible(true);
     }
     
     private JPanel createPanel(){
@@ -29,12 +27,9 @@ public class HistogramDisplay extends ApplicationFrame{
     
     private DefaultCategoryDataset createDataset(){
         DefaultCategoryDataset dataSet= new DefaultCategoryDataset();
-        dataSet.addValue(10, "", "ulpgc.es");
-        dataSet.addValue(2, "", "gmail.com");
-        dataSet.addValue(4, "", "geocities.org");
-        dataSet.addValue(5, "", "icloud.com");
-        dataSet.addValue(9, "", "ull.es");
-        dataSet.addValue(10, "", "yahoo.es");
+        for (String key : histogram.keySet()){
+            dataSet.addValue(histogram.get(key),"", key);
+        }        
         return dataSet;
     }
     
@@ -43,5 +38,9 @@ public class HistogramDisplay extends ApplicationFrame{
                 "Correos por dominio", dataSet, PlotOrientation.VERTICAL, 
                 false, false, rootPaneCheckingEnabled);
         return chart;
+    }
+        
+    public void execute(){
+        setVisible(true);
     }
 }
